@@ -55,10 +55,9 @@ const getPixletVersion = async () => (await executePixlet(['version'])).stdout
 exports.handler = async (event) => {
   // query params
   const params = event.queryStringParameters
-  // const appletUrl = params.applet
-  const applet = params.applet
+  const appletUrl = params.applet
   // const appletPath = appletUrl ? INPUT_APPLET_PATH : DEFAULT_APPLET_PATH
-  const appletPath = applet ? path.join(ASSETS_PATH, applet) : DEFAULT_APPLET_PATH
+  const appletPath = appletUrl ? path.join(ASSETS_PATH, Url) : DEFAULT_APPLET_PATH
   const format = (params.format && FORMATS[params.format.toUpperCase()]) || FORMATS.WEBP
   const output = (params.output && OUTPUTS[params.output.toUpperCase()]) || OUTPUTS.HTML
   const cssClass = params.pixelate === 'false' ? '' : CSS_CLASSES.PIXETLATE
