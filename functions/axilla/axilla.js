@@ -57,7 +57,7 @@ exports.handler = async (event) => {
   const params = event.queryStringParameters
   const appletUrl = params.applet
   // const appletPath = appletUrl ? INPUT_APPLET_PATH : DEFAULT_APPLET_PATH
-  const appletPath = appletUrl ? path.join(ASSETS_PATH, Url) : DEFAULT_APPLET_PATH
+  const appletPath = appletUrl ? path.join(ASSETS_PATH, appletUrl) : DEFAULT_APPLET_PATH
   const format = (params.format && FORMATS[params.format.toUpperCase()]) || FORMATS.WEBP
   const output = (params.output && OUTPUTS[params.output.toUpperCase()]) || OUTPUTS.HTML
   const cssClass = params.pixelate === 'false' ? '' : CSS_CLASSES.PIXETLATE
