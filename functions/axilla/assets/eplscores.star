@@ -18,7 +18,7 @@ DEFAULT_LOCATION = """
     "lng": "-104.991531",
     "description": "Denver, CO, USA",
     "locality": "Denver",
-    "place_id": "ChIJCSF8lBZEwokRhngABHRcdoI",
+    "place_id": "ChIJzxcfI6qAa4cR1jaKJ_j0jhE",
     "timezone": "America/Denver"
 }
 """
