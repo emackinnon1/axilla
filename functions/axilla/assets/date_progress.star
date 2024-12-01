@@ -12,7 +12,7 @@ load("render.star", "render")
 load("schema.star", "schema")
 load("time.star", "time")
 
-DEFAULT_TIMEZONE = "Europe/Stockholm"
+DEFAULT_TIMEZONE = "America/Denver"
 
 P_LOCATION = "location"
 P_SHOW_LABELS = "show_labels"
