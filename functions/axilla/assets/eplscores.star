@@ -755,7 +755,7 @@ def get_schema():
                 name = "Rotation Speed",
                 desc = "Amount of seconds each score is displayed.",
                 icon = "gear",
-                default = rotationOptions[2].value,
+                default = rotationOptions[0].value,
                 options = rotationOptions,
             ),
             schema.Dropdown(
