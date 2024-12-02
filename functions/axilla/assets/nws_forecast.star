@@ -41,7 +41,7 @@ DAY_LABELS = [
 
 def main(config):
     # Config
-    location = json.decode(config.get("location") or DEFAULT_LOCATION)
+    location = json.decode(DEFAULT_LOCATION)
 
     response = http.get(WEATHER_URL + location["lat"] + "," + location["lng"], ttl_seconds = 300)
     if response.status_code != 200:
