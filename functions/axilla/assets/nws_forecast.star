@@ -22,9 +22,9 @@ MAX_DAYS_TO_SHOW = 3
 
 DEFAULT_LOCATION = """
 {
-  "lat": "37.27",
-  "lng": "-121.9272",
-  "timezone": "America/Los_Angeles"
+  "lat": "39.742043",
+  "lng": "-104.991531",
+  "timezone": "America/Denver"
 }
 """
 
