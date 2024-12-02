@@ -84,7 +84,7 @@ def main(config):
     displayTop = config.get("displayTop", "league")
     timeColor = config.get("displayTimeColor", "#FFA500")
     rotationSpeed = config.get("rotationSpeed", "5")
-    location = config.get("location", DEFAULT_LOCATION)
+    location = DEFAULT_LOCATION
     loc = json.decode(location)
     timezone = loc["timezone"]
     now = time.now().in_location(timezone)
