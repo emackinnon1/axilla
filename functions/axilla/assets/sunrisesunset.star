@@ -56,7 +56,7 @@ sunsetImage = """iVBORw0KGgoAAAANSUhEUgAAAB0AAAAOCAYAAADT0Rc6AAAAAXNSR0IArs4c6QA
 
 def main(config):
     # Get longditude and latitude from location
-    location = json.decode(DEFAULT_LOCATION)
+    location = json.decode(config.get("location", DEFAULT_LOCATION))
     lat = float(location["lat"])
     lng = float(location["lng"])
 
