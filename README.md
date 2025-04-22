@@ -93,6 +93,64 @@ Run unit tests and watch for changes:
 
     npm run test:watch
 
+## Running on Raspberry Pi
+
+This project can run on a Raspberry Pi using the local installation of pixlet or the included binaries.
+
+### Prerequisites
+
+1. Node.js and NPM should be installed on your Raspberry Pi
+2. Pixlet binary installed (recommended) - follow instructions at https://github.com/tidbyt/pixlet#getting-started
+
+### Installation
+
+1. Clone this repository:
+   ```
+   git clone https://github.com/btjones/axilla.git
+   cd axilla
+   ```
+
+2. Install dependencies:
+   ```
+   npm install
+   ```
+
+3. Run the application:
+   ```
+   ./start.sh
+   ```
+   
+   Alternatively, use npm:
+   ```
+   npm start
+   ```
+
+### Accessing the App
+
+Once running, the app will be available at:
+- http://localhost:3000
+
+To make it accessible from other devices on your local network, update the `HOST` value in the `config.js` file to your Raspberry Pi's IP address or set `HOST` to `'0.0.0.0'`.
+
+### Configuration
+
+You can configure the application by editing the `config.js` file:
+
+- `PIXLET_BINARY`: The name of the pixlet binary to use (default: 'pixlet')
+- `PIXLET_BINARY_PATH`: Path to the pixlet binary (leave empty to use system PATH)
+- `LD_LIBRARY_PATH`: Path to the library files (default: './functions/axilla/lib')
+- `PORT`: The port to run the server on (default: 3000)
+- `HOST`: The host to bind to (default: 'localhost')
+
+### Using Applets
+
+Access the application and use the following URL parameters:
+- `fileName`: Name of a built-in applet (e.g., `http://localhost:3000/?fileName=digital_rain`)
+- `applet`: URL to a remote applet (e.g., `http://localhost:3000/?applet=https://example.com/myapplet.star`)
+- `format`: Output format, either 'webp' or 'gif'
+- `output`: Response type, either 'html', 'image', or 'base64'
+- Any other parameters will be passed to the applet as configuration
+
 ## Pixlet
 
 This application contains code from, and includes binaries of, [Pixlet](https://github.com/tidbyt/pixlet) which is covered under the [Apache License Version 2.0](PIXLET_LICENSE.txt).

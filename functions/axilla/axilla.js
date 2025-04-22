@@ -4,6 +4,15 @@ const util = require('util')
 const fetch = require('node-fetch')
 const execFile = util.promisify(require('child_process').execFile)
 
+// Load our configuration
+let config;
+try {
+  config = require('../../config');
+} catch (e) {
+  // Fall back to env variables if config file is not available
+  config = {};
+}
+
 const RESERVERD_PARAMS = [
   'format',
   'output',
@@ -26,12 +35,11 @@ const CSS_CLASSES = {
   PIXETLATE: 'pixelate',
 }
 
-// environment variables
-// these are dynamically generated using a plugin so destructuring cannot be used
+// environment variables - use our config file if available
 /* eslint-disable prefer-destructuring */
-const PIXLET_BINARY = process.env.PIXLET_BINARY
-const PIXLET_BINARY_PATH = process.env.PIXLET_BINARY_PATH
-const LD_LIBRARY_PATH = process.env.LD_LIBRARY_PATH
+const PIXLET_BINARY = config.PIXLET_BINARY || process.env.PIXLET_BINARY
+const PIXLET_BINARY_PATH = config.PIXLET_BINARY_PATH || process.env.PIXLET_BINARY_PATH
+const LD_LIBRARY_PATH = config.LD_LIBRARY_PATH || process.env.LD_LIBRARY_PATH
 /* eslint-enable prefer-destructuring */
 
 // static paths
