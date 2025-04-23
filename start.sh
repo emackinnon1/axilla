@@ -20,7 +20,15 @@ if command -v pixlet &> /dev/null; then
   echo "Using system-installed pixlet binary"
   export PIXLET_BINARY="pixlet"
   export PIXLET_BINARY_PATH=""
-  export IS_DEV=true
+  if [ $NODE_ENV == "development"]; then
+    echo "Running in development mode"
+    export IS_DEV=true
+    node server.js
+  elif [ $NODE_ENV == "production"]; then
+    echo "Running in production mode"
+    export IS_DEV=false
+    pm2 start server.js
+  fi
   node server.js
 else
   echo "No pixlet binary found in PATH, attempting to use included binaries"
