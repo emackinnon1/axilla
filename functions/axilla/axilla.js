@@ -3,6 +3,8 @@ const path = require('path')
 const util = require('util')
 const fetch = require('node-fetch')
 const execFile = util.promisify(require('child_process').execFile)
+const os = require('os')
+const { exec } = require('child_process')
 
 // Load our configuration
 let config;
@@ -12,6 +14,9 @@ try {
   // Fall back to env variables if config file is not available
   config = {};
 }
+
+// Use os.tmpdir() instead of hardcoded /tmp/ for better cross-platform compatibility
+const TMP_PATH = os.tmpdir() + path.sep
 
 const RESERVERD_PARAMS = [
   'format',
@@ -43,7 +48,6 @@ const LD_LIBRARY_PATH = config.LD_LIBRARY_PATH || process.env.LD_LIBRARY_PATH
 /* eslint-enable prefer-destructuring */
 
 // static paths
-const TMP_PATH = '/tmp/'
 const ASSETS_PATH = path.join(__dirname, 'assets')
 const DEFAULT_APPLET_PATH = path.join(ASSETS_PATH, 'default.star')
 const INPUT_APPLET_PATH = path.join(TMP_PATH, 'input.star')
@@ -51,9 +55,57 @@ const HTML_TEMPLATE_PATH = path.join(ASSETS_PATH, 'basic.html')
 
 // executes pixlet with the given arguments
 const executePixlet = async (args) => {
-  const command = PIXLET_BINARY_PATH ? path.join(PIXLET_BINARY_PATH, PIXLET_BINARY) : PIXLET_BINARY
-  const opts = LD_LIBRARY_PATH ? { env: { LD_LIBRARY_PATH } } : undefined
-  return execFile(command, args, opts)
+  // const command = PIXLET_BINARY_PATH ? path.join(PIXLET_BINARY_PATH, PIXLET_BINARY) : PIXLET_BINARY
+  const command = '/opt/homebrew/bin/pixlet'
+  console.log(`Pixlet binary: ${command}`)
+  
+  console.log(`Executing pixlet command: ${command} ${args.join(' ')}`)
+  
+  try {
+    // Make sure we're passing the proper environment variables
+    const env = { ...process.env }
+    
+    if (LD_LIBRARY_PATH) {
+      env.LD_LIBRARY_PATH = LD_LIBRARY_PATH
+    }
+    
+    // Set the PIXLET_ROOT_DIR to ensure pixlet can find the required modules
+    env.PIXLET_ROOT_DIR = ASSETS_PATH
+    
+    // Need to set cwd to the assets directory so pixlet can find the modules
+    const opts = { 
+      env,
+      cwd: path.dirname(ASSETS_PATH)  // Use the parent directory of assets
+    }
+    
+    const result = await execFile(command, args, opts)
+    return result
+  } catch (error) {
+    console.error(`Error executing pixlet: ${error.message}`)
+    console.error(`Command: ${command} ${args.join(' ')}`)
+    
+    if (error.stderr) {
+      console.error(`stderr: ${error.stderr}`)
+    }
+    
+    // Try to get more info about the error
+    try {
+      const versionOutput = await new Promise((resolve, reject) => {
+        exec(`${command} version`, (err, stdout, stderr) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(stdout.trim())
+          }
+        })
+      })
+      console.log(`Pixlet version check: ${versionOutput}`)
+    } catch (versionError) {
+      console.error(`Failed to get pixlet version: ${versionError.message}`)
+    }
+    
+    throw error
+  }
 }
 
 // helper functions
@@ -65,7 +117,9 @@ exports.handler = async (event) => {
   const params = event.queryStringParameters
   const appletUrl = params.applet
   const localAppletName = params.fileName
-  const appletPath = localAppletName ? path.join(ASSETS_PATH, localAppletName + '.star') : appletUrl ? INPUT_APPLET_PATH : DEFAULT_APPLET_PATH
+  const appletPath = localAppletName ? path.join(ASSETS_PATH, `${localAppletName}/${localAppletName}` + '.star') : appletUrl ? INPUT_APPLET_PATH : DEFAULT_APPLET_PATH
+  console.log(`Applet path: ${appletPath}`)
+  
   const format = (params.format && FORMATS[params.format.toUpperCase()]) || FORMATS.WEBP
   const output = (params.output && OUTPUTS[params.output.toUpperCase()]) || OUTPUTS.HTML
   const cssClass = params.pixelate === 'false' ? '' : CSS_CLASSES.PIXETLATE
