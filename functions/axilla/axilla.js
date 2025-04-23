@@ -55,8 +55,8 @@ const HTML_TEMPLATE_PATH = path.join(ASSETS_PATH, 'basic.html')
 
 // executes pixlet with the given arguments
 const executePixlet = async (args) => {
-  // const command = PIXLET_BINARY_PATH ? path.join(PIXLET_BINARY_PATH, PIXLET_BINARY) : PIXLET_BINARY
-  const command = '/opt/homebrew/bin/pixlet'
+  const command = PIXLET_BINARY_PATH ? path.join(PIXLET_BINARY_PATH, PIXLET_BINARY) : PIXLET_BINARY
+
   console.log(`Pixlet binary: ${command}`)
   
   console.log(`Executing pixlet command: ${command} ${args.join(' ')}`)
