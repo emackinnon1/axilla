@@ -29,7 +29,6 @@ if command -v pixlet &> /dev/null; then
     export IS_DEV=false
     pm2 start server.js
   fi
-  node server.js
 else
   echo "No pixlet binary found in PATH, attempting to use included binaries"
   
